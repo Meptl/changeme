@@ -1,10 +1,19 @@
 [package]
-name = "test1"
+name = "changeme"
 version = "0.1.0"
-authors = ["Christopher Chin <ctchin13@gmail.com>"]
+authors = ["Christopher Chin <ctchin13@gmail.com>", "Tyler Slabinski <tslabinski@slabity.net>"]
+build = "build.rs"
 
 [dependencies]
 error-chain = "*"
 log = "*"
 time = "*"
-glium = "*"
+collada = "*"
+cgmath = "*"
+vulkano = "*"
+vulkano-win = "*"
+winit = "*"
+
+[build-dependencies]
+vk-sys = "*"
+vulkano-shaders = "*"
