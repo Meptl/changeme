@@ -68,7 +68,7 @@ impl Vulkan {
                                 .next().expect("no device available");
         debug!("Using device: {} (type: {:?})", physical.name(), physical.ty());
 
-        // Create window
+        // Create window:
         let window = ::winit::WindowBuilder::new().build_vk_surface(&instance).unwrap();
 
         // Choose GPU queue for draw command execution
@@ -98,7 +98,7 @@ impl Vulkan {
             //let alpha = caps.supported_composite_alpha.iter().next().unwrap(); // image alpha/window transparency
             let format = caps.supported_formats[0].0;
 
-            vulkano::swapchain::Swapchain::new(&device, &window.surface(), 3, format, dimensions, 1,
+            vulkano::swapchain::Swapchain::new(&device, &window.surface(), caps.min_image_count, format, dimensions, 1,
                                                &usage, &queue, vulkano::swapchain::SurfaceTransform::Identity,
                                                vulkano::swapchain::CompositeAlpha::Opaque,
                                                present, true, None).expect("failed to create swapchain")
@@ -113,8 +113,8 @@ impl Vulkan {
         let proj = ::cgmath::perspective(::cgmath::Rad(::std::f32::consts::FRAC_PI_2),
                                        { let d = images[0].dimensions(); d[0] as f32 / d[1] as f32 }, 0.01, 100.0);
         let view = ::cgmath::Matrix4::look_at(::cgmath::Point3::new(0.3, 0.3, 1.0),
-                                            ::cgmath::Point3::new(0.0, 0.0, 0.0),
-                                            ::cgmath::Vector3::new(0.0, 1.0, 0.0));
+                                              ::cgmath::Point3::new(0.0, 0.0, 0.0),
+                                              ::cgmath::Vector3::new(0.0, 1.0, 0.0));
         let scale = ::cgmath::Matrix4::from_scale(0.5);
 
         let uniform_buffer = CpuAccessibleBuffer::<vs::ty::Data>::from_data(
@@ -224,6 +224,7 @@ impl Renderer for Vulkan {
         // Clearing the old submissions by keeping alive only the ones whose destructor would block.
         self.submissions.retain(|s| s.destroying_would_block());
 
+        /*
         {
             // aquiring write lock for the uniform buffer
             let mut buffer_content = self.uniform_buffer.write(Duration::new(1, 0)).unwrap();
@@ -234,16 +235,19 @@ impl Renderer for Vulkan {
             // we can update content directly
             buffer_content.world = ::cgmath::Matrix4::from(rotation).into();
         }
+        */
 
         let image_num = self.swapchain.acquire_next_image(Duration::from_millis(1)).unwrap();
         self.submissions.push(vulkano::command_buffer::submit(&self.command_buffers[image_num], &self.queue).unwrap());
         self.swapchain.present(&self.queue, image_num).unwrap();
 
+        /*
         for ev in self.window.window().poll_events() {
             match ev {
                 ::winit::Event::Closed => return,
                 _ => ()
             }
         }
+        */
     }
 }

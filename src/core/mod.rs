@@ -8,16 +8,19 @@ pub type Index = u16;
 /// use in the vulkano pipeline. It was modified to support newtypes.
 /// Using this allows us to freely communicate between vulkan and the cgmath crates
 unsafe impl ::vulkano::pipeline::vertex::Vertex for Vertex {
+    #[inline(always)]
     fn member(name: &str) -> Option<::vulkano::pipeline::vertex::VertexMemberInfo> {
+        #[allow(unused_imports)]
         use ::vulkano::format::Format;
         use ::vulkano::pipeline::vertex::VertexMemberInfo;
         use ::vulkano::pipeline::vertex::VertexMemberTy;
         use ::vulkano::pipeline::vertex::VertexMember;
 
+        // am unsure why the member names must match variables in glsl
         match name {
-            "x" => {
+            "pos_x" => {
                 let (ty, array_size) = unsafe {
-                    fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
+                    #[inline] fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
                     let dummy = 0usize as *const Vertex;
                     f(&(&*dummy).0.x)
                 };
@@ -33,9 +36,9 @@ unsafe impl ::vulkano::pipeline::vertex::Vertex for Vertex {
                     array_size: array_size,
                 })
             },
-            "y" => {
+            "pos_y" => {
                 let (ty, array_size) = unsafe {
-                    fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
+                    #[inline] fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
                     let dummy = 0usize as *const Vertex;
                     f(&(&*dummy).0.y)
                 };
@@ -51,9 +54,9 @@ unsafe impl ::vulkano::pipeline::vertex::Vertex for Vertex {
                     array_size: array_size,
                 })
             },
-            "z" => {
+            "pos_z" => {
                 let (ty, array_size) = unsafe {
-                    fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
+                    #[inline] fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
                     let dummy = 0usize as *const Vertex;
                     f(&(&*dummy).0.z)
                 };
@@ -74,17 +77,21 @@ unsafe impl ::vulkano::pipeline::vertex::Vertex for Vertex {
     }
 }
 
+/// impl_vertex!(Normal, x, y, z)
 unsafe impl ::vulkano::pipeline::vertex::Vertex for Normal {
+    #[inline(always)]
     fn member(name: &str) -> Option<::vulkano::pipeline::vertex::VertexMemberInfo> {
+        #[allow(unused_imports)]
         use ::vulkano::format::Format;
         use ::vulkano::pipeline::vertex::VertexMemberInfo;
         use ::vulkano::pipeline::vertex::VertexMemberTy;
         use ::vulkano::pipeline::vertex::VertexMember;
 
+        // am unsure why the member names must match variables in glsl
         match name {
-            "x" => {
+            "norm_x" => {
                 let (ty, array_size) = unsafe {
-                    fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
+                    #[inline] fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
                     let dummy = 0usize as *const Normal;
                     f(&(&*dummy).0.x)
                 };
@@ -100,9 +107,9 @@ unsafe impl ::vulkano::pipeline::vertex::Vertex for Normal {
                     array_size: array_size,
                 })
             },
-            "y" => {
+            "norm_y" => {
                 let (ty, array_size) = unsafe {
-                    fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
+                    #[inline] fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
                     let dummy = 0usize as *const Normal;
                     f(&(&*dummy).0.y)
                 };
@@ -118,9 +125,9 @@ unsafe impl ::vulkano::pipeline::vertex::Vertex for Normal {
                     array_size: array_size,
                 })
             },
-            "z" => {
+            "norm_z" => {
                 let (ty, array_size) = unsafe {
-                    fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
+                    #[inline] fn f<S: VertexMember>(_: &S) -> (VertexMemberTy, usize) { S::format() }
                     let dummy = 0usize as *const Normal;
                     f(&(&*dummy).0.z)
                 };

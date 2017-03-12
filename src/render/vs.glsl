@@ -12,9 +12,9 @@
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_450pack : enable
 
-layout(location = 0) in float x;
-layout(location = 1) in float y;
-layout(location = 2) in float z;
+layout(location = 0) in float pos_x;
+layout(location = 1) in float pos_y;
+layout(location = 2) in float pos_z;
 layout(location = 3) in float norm_x;
 layout(location = 4) in float norm_y;
 layout(location = 5) in float norm_z;
@@ -30,5 +30,5 @@ layout(set = 0, binding = 0) uniform Data {
 void main() {
     mat4 worldview = uniforms.view * uniforms.world;
     v_normal = transpose(inverse(mat3(worldview))) * vec3(norm_x, norm_y, norm_z);
-    gl_Position = uniforms.proj * worldview * vec4(x, y, z, 1.0);
+    gl_Position = uniforms.proj * worldview * vec4(pos_x, pos_y, pos_z, 1.0);
 }
