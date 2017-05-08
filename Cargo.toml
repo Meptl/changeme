@@ -12,7 +12,7 @@ collada = "*"
 cgmath = "*"
 vulkano = "*"
 vulkano-win = "*"
-winit = "*"
+winit = "0.5.2"
 
 [build-dependencies]
 vk-sys = "*"
